@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Expense_Tracker.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Transaction Report";
+}
+
+<h2 class="text-center text-primary mt-3 fw-bold" style="font-family: 'Poppins', sans-serif;">Transaction Report</h2>
+
+
+<!-- Filter Form -->
+<form method="get" asp-action="Index" class="p-3 border rounded shadow-sm mb-4 bg-light">
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="type" class="form-label fw-bold text-dark">Transaction Type</label>
+            <select name="type" class="form-select border-primary">
+                <option value="">All</option>
+                <option value="Income">Income</option>
+                <option value="Expense">Expense</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="amount" class="form-label fw-bold text-dark">Amount</label>
+            <input type="number" name="amount" class="form-control border-primary" placeholder="Enter amount" />
+        </div>
+        <div class="col-md-4">
+            <label for="date" class="form-label fw-bold text-dark">Date</label>
+            <input type="date" name="date" class="form-control border-primary" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg w-100">Filter</button>
+</form>
+
+<!-- Filtered Transactions Table -->
+<div class="table-responsive">
+    <table class="table table-hover table-bordered mt-4 shadow-sm">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-white-50">No transactions found.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var transaction in Model)
+                {
+                    <tr>
+                        <td class="text-white">@transaction.CategoryTitleWithIcon</td>
+                        <td class="text-white">@transaction.Date.ToString("MMM dd, yyyy")</td>
+                        <td class="text-white">@transaction.TransactionType</td>
+                        <td class="text-white">@transaction.FormattedAmount</td>
+                        <td class="text-white">@transaction.Note</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Additional Styles -->
+<style>
+    body {
+        background-color: #12161d;
+    }
+
+    h2 {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .form-label {
+        font-weight: 600;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #6c757d; /* Darker gray on hover */
+    }
+
+    .table thead {
+        background-color: #12161d; /* Dark gray for header */
+        color: #6c757d;
+        font-weight: bold;
+    }
+
+    .table tbody {
+        background-color: #6c757d; /* Lighter gray for table body */
+    }
+
+    .text-white {
+        color: #ffffff !important;
+    }
+
+    .text-white-50 {
+        color: rgba(255, 255, 255, 0.5) !important; /* Light gray for empty message */
+    }
+
+    .btn-primary {
+        background-color: #6c757d;
+        border: none;
+    }
+</style>
